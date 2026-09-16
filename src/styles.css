@@ -1,0 +1,159 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-moon: var(--moon);
+  --color-glow: var(--glow);
+  --color-wine: var(--wine);
+  --color-rose: var(--rose);
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Jost", sans-serif;
+}
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.16 0.045 8);
+  --foreground: oklch(0.93 0.02 30);
+  --card: oklch(0.21 0.05 8);
+  --card-foreground: oklch(0.93 0.02 30);
+  --primary: oklch(0.72 0.12 55);
+  --primary-foreground: oklch(0.18 0.04 8);
+  --secondary: oklch(0.25 0.055 8);
+  --secondary-foreground: oklch(0.93 0.02 30);
+  --muted: oklch(0.25 0.055 8);
+  --muted-foreground: oklch(0.68 0.045 25);
+  --accent: oklch(0.58 0.14 12);
+  --accent-foreground: oklch(0.95 0.02 30);
+  --border: oklch(0.93 0.02 30 / 12%);
+  --ring: oklch(0.72 0.12 55);
+  --moon: oklch(0.96 0.03 80);
+  --glow: oklch(0.78 0.14 50);
+  --wine: oklch(0.42 0.11 10);
+  --rose: oklch(0.62 0.16 15);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+  }
+}
+
+/* ---- night sky background ---- */
+.sky {
+  background:
+    radial-gradient(ellipse 120% 70% at 50% -10%, oklch(0.3 0.08 355) 0%, transparent 60%),
+    radial-gradient(ellipse 90% 60% at 80% 110%, oklch(0.24 0.06 20) 0%, transparent 55%),
+    linear-gradient(180deg, oklch(0.13 0.04 350) 0%, oklch(0.18 0.055 5) 55%, oklch(0.15 0.045 0) 100%);
+}
+
+.moon {
+  background: radial-gradient(circle at 38% 35%, oklch(0.99 0.02 85) 0%, var(--moon) 55%, oklch(0.85 0.05 70) 100%);
+  box-shadow:
+    0 0 60px 18px oklch(0.9 0.06 75 / 25%),
+    0 0 160px 60px oklch(0.85 0.08 60 / 12%);
+}
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 62% 30%, oklch(0.82 0.04 70 / 55%) 0 8%, transparent 9%),
+    radial-gradient(circle at 30% 62%, oklch(0.82 0.04 70 / 45%) 0 6%, transparent 7%),
+    radial-gradient(circle at 68% 68%, oklch(0.84 0.04 70 / 40%) 0 5%, transparent 6%);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.star {
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--moon);
+  animation: twinkle var(--dur, 4s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes petal-fall {
+  0% { transform: translate3d(0, -8vh, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.9; }
+  85% { opacity: 0.7; }
+  100% { transform: translate3d(var(--sway, 6vw), 108vh, 0) rotate(320deg); opacity: 0; }
+}
+.petal {
+  position: absolute;
+  top: -6vh;
+  border-radius: 80% 10% 80% 10%;
+  background: linear-gradient(135deg, var(--rose), var(--wine));
+  animation: petal-fall var(--dur, 16s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes heart-float {
+  0% { transform: translateY(0) scale(0.9); opacity: 0; }
+  15% { opacity: 0.9; }
+  50% { transform: translateY(-9vh) scale(1.05); opacity: 0.7; }
+  100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+}
+.glow-heart {
+  position: absolute;
+  color: var(--rose);
+  text-shadow: 0 0 14px oklch(0.62 0.16 15 / 80%), 0 0 34px oklch(0.62 0.16 15 / 40%);
+  animation: heart-float var(--dur, 9s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.32, 0.72, 0, 1) both;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.72 0.12 55 / 35%); }
+  50% { box-shadow: 0 0 34px 8px oklch(0.72 0.12 55 / 30%); }
+}
+.btn-yes {
+  animation: pulse-glow 3.2s ease-in-out infinite;
+}
+
+@keyframes confetti-pop {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-40vh) translateX(var(--sway, 4vw)) rotate(340deg) scale(0.6); opacity: 0; }
+}
+.confetti {
+  position: absolute;
+  animation: confetti-pop var(--dur, 2.4s) ease-out forwards;
+  animation-delay: var(--delay, 0s);
+}
